@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <data>
+        <record id="clothes_product_view_tree" model="ir.ui.view">
+            <field name="name">clothes.product.tree.view</field>
+            <field name="model">clothes.product</field>
+            <field name="arch" type="xml">
+                <tree decoration-danger="quantity == 0" decoration-info="quantity > 0" default_order="create_date desc" >
+                    <field name="product_code"/>
+                    <field name="quantity"/>
+                    <field name="sold"/>
+                    <field name="fixed_price"/>
+                    <field name="available" widget="boolean_toggle"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="clothes_product_view_form" model="ir.ui.view">
+            <field name="name">clothes.product.form.view</field>
+            <field name="model">clothes.product</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div>
+                            <label for="category_id"/>
+                            <h3><field name="category_id" /></h3>
+                        </div>
+                        <group name="info">
+                            <group>
+                                <field name ="product_code"/>
+                                <field name="size" />
+                                <field name="color"/>
+                                <field name="quantity"/>
+                            </group>
+                            <group>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="fixed_price"/>
+                                <field name="available"/>
+                            </group>
+                            <group>
+                                <field name="image" string="Product's Image" widget="image" width="200" height="200"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+
+<!--        <record id="product_search_view" model="ir.ui.view">-->
+<!--            <field name="name">product.search.view</field>-->
+<!--            <field name="model">clothes.product</field>-->
+<!--            <field eval="10" name="priority"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <search string="Product search">-->
+<!--                    <field name="name" string="Name product"/>-->
+<!--                    <field name="category_id" string="Category"/>-->
+<!--                    <field name="fixed_price" string="Price"/>-->
+<!--                    <group expand='0' string='Filters'>-->
+<!--                        <filter name='price' string="Price (&lt; 30)" domain="[('price', '&lt;', 30)]"/>-->
+<!--                        <separator/>-->
+<!--                        <filter name='price' string="Price (&lt; 40)" domain="[('price', '&lt;', 40)]"/>-->
+<!--                        <separator/>-->
+<!--                    </group>-->
+<!--                    <group expand='0' string='Group by...'>-->
+<!--                        <filter string='Name' name="Name product" context="{'group_by': 'name'}"/>-->
+<!--                        <filter string='Discount' name="Discount product" context="{'group_by': 'discount'}"/>-->
+<!--                        <filter string='Category' name="Category product" context="{'group_by': 'category_id'}"/>-->
+<!--                    </group>-->
+<!--                </search>-->
+<!--            </field>-->
+<!--        </record>-->
+
+        <record id="action_clothes_product" model="ir.actions.act_window">
+            <field name="name">Class Product</field>
+            <field name="res_model">clothes.product</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+<!--            <field name="search_view_id" ref="product_search_view"/>-->
+        </record>
+
+        <menuitem id="clothes_product"
+                  name="Class Product"
+                  action="action_clothes_product"
+                  parent = "menu_clothes"
+                  sequence = "3"/>
+    </data>
+</odoo>

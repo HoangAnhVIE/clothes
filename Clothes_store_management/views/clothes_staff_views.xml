@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <data>
+        <record id="clothes_staff_tree_view" model="ir.ui.view">
+            <field name="name">clothes.staff.tree.view</field>
+            <field name="model">clothes.staff</field>
+            <field name="arch" type="xml">
+                <tree string="Staff" >
+                    <field name="user_id" widget="many2one_avatar_user"/>
+                    <field name="phone"/>
+                    <field name="address"/>
+                    <field name="age"/>
+                    <field name="gender" widget="badge" decoration-danger="gender == 'female'" decoration-info="gender == 'male'" optional="show"/>
+                    <field name="image"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="clothes_staff_form_view" model="ir.ui.view">
+            <field name="name">clothes.staff.form.view</field>
+            <field name="model">clothes.staff</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div>
+                            <label for="user_id" class="oe_edit_only"/>
+                            <h1><field name="user_id" placeholder="e.g. name"/></h1>
+                            <label for="phone"/>
+                            <h3><field name="phone"/></h3>
+                        </div>
+                        <notebook>
+                            <page string="Info Staff">
+                                <group name="info">
+                                    <group>
+                                        <field name="date_of_birth"/>
+                                        <field name="age"/>
+                                        <field name="gender"/>
+                                        <field name="address"/>
+                                    </group>
+                                    <group>
+                                        <field name="image" string=" Image" widget="image" width="200" height="200"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Bills">
+                                <group>
+                                    <group>
+                                        <field name="date_from"/>
+                                    </group>
+                                    <group>
+                                        <field name="date_to"/>
+                                    </group>
+                                </group>
+                                <group>
+                                    <field name="bill_ids"/>
+                                    <field name="total_bill_paid"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="clothes_staff_view_kanban" model="ir.ui.view">
+            <field name="name">clothes.staff.kanban</field>
+            <field name="model">clothes.staff</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="user_id"/>
+                    <field name="image"/>
+                    <field name="phone"/>
+                    <field name="address"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_global_click" style="width: 20rem;">
+                                <div class="card" >
+                                    <field name="image" widget="image" width="100%" height="210"/>
+                                    <div class="card-body" >
+                                        <h3>
+                                            <spam>Name:</spam>
+                                            <spam>
+                                                <field name="user_id"/>
+                                            </spam>
+                                        </h3>
+                                        <h4>
+                                            <spam>Age: </spam>
+                                            <spam>
+                                                <field name="age"/>
+                                            </spam>
+                                        </h4>
+                                        <h5>
+                                            <spam>Phone: </spam>
+                                            <spam>
+                                                <field name="phone"/>
+                                            </spam>
+                                        </h5>
+                                        <p>
+                                            Address:
+                                            <field name="address"/>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="action_clothes_staff" model="ir.actions.act_window">
+            <field name="name">Staff</field>
+            <field name="res_model">clothes.staff</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+
+        <menuitem id="clothes_staff"
+                  name="Staff"
+                  action="action_clothes_staff"
+                  parent = "menu_clothes"
+                  sequence = "9"/>
+    </data>
+</odoo>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <data>
+        <record id="clothes_customer_tree_view" model="ir.ui.view">
+            <field name="name">clothes.customer.tree.view</field>
+            <field name="model">clothes.customer</field>
+            <field name="arch" type="xml">
+                <tree string="Customer" >
+                    <field name="user_id" widget="many2one_avatar_user"/>
+                    <field name="phone"/>
+                    <field name="address"/>
+                    <field name="email"/>
+                    <field name="age"/>
+                    <field name="gender" widget="badge" decoration-danger="gender == 'female'" decoration-info="gender == 'male'" optional="show"/>
+                    <field name="image"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="clothes_customer_form_view" model="ir.ui.view">
+            <field name="name">clothes.customer.form.view</field>
+            <field name="model">clothes.customer</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div>
+                            <label for="user_id" class="oe_edit_only"/>
+                            <h1><field name="user_id" placeholder="e.g. name" /></h1>
+                            <group>
+                                <button name="%(action_clothes_bill_form)d" string="Create Bill" type="action" class="oe_highlight" context="{'default_customer_id': active_id}"/>
+                            </group>
+                        </div>
+                        <notebook>
+                            <page string="Info Customer">
+                                <group name="info">
+                                    <group>
+                                        <field name="phone"/>
+                                        <field name="date_of_birth"/>
+                                        <field name="age"/>
+                                        <field name="gender"/>
+                                        <field name="email"/>
+                                        <field name="address"/>
+                                        <field name="currency_id" invisible="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="image" string="Avatar" widget="image" width="200" height="200"
+                                               class="oe_avatar"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Bills">
+                                <group>
+                                    <group>
+                                        <field name="date_from" />
+                                    </group>
+                                    <group>
+                                        <field name="date_to" />
+                                    </group>
+                                </group>
+                                <group>
+                                    <field name="bill_ids" />
+                                    <field name="total_bill_paid"/>
+                                    <field name="total_bill_unpaid"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_clothes_customer" model="ir.actions.act_window">
+            <field name="name">Customer</field>
+            <field name="res_model">clothes.customer</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a new Customer for more!
+                </p>
+            </field>
+        </record>
+
+        <record model="ir.actions.server" id="action_view_customer">
+                <field name="name">Info</field>
+                <field name="model_id" ref="model_clothes_customer"/>
+                <field name="state">code</field>
+                <field name="code">action = model.action_view_customer()</field>
+        </record>
+
+        <menuitem id="menu_views_customer"
+                  name="Customer"
+                  parent="menu_clothes"
+                  sequence="2"
+                  action="action_view_customer"
+                  groups="Clothes_store_management.group_customer"/>
+
+        <menuitem id="clothes_customer"
+                  name="Customer"
+                  action="action_clothes_customer"
+                  parent = "menu_clothes"
+                  sequence = "8"
+                  groups="Clothes_store_management.group_manager,Clothes_store_management.group_staff"/>
+    </data>
+</odoo>

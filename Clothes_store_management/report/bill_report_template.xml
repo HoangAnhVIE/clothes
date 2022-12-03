@@ -1,0 +1,75 @@
+<odoo>
+    <record id="bill_report_template" model="ir.actions.report">
+        <field name="name">Print Bill</field>
+        <field name="model">clothes.bill</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">Clothes_store_management.report_bill</field>
+        <field name="report_file">Clothes_store_management.report_bill</field>
+        <field name="binding_model_id" ref="model_clothes_bill"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_bill">
+        <t t-call="web.basic_layout">
+            <t t-foreach="docs" t-as="doc">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <h1 style= "margin-bottom:120px" align="center">BILL</h1>
+                            <h5>
+                                Customer:
+                                <t t-esc="doc.customer_id.name"/>
+                            </h5>
+                            <h5>
+                                Book Date:
+                                <t t-esc="doc.book_date"/>
+                            </h5>
+                            <h5>
+                                Fee Ship
+                                <t t-esc="doc.fee_ship"/>
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+                <hr/>
+                <div class="container">
+                    <h3>Detail Bill</h3>
+                    <table class="table table-bordered" style="text-align: right">
+                        <thead>
+                            <tr>
+                                <th scope="col">Product</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Total Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="doc.bill_details_ids" t-as="line">
+                                <tr>
+                                    <th scope="row">
+                                        <span t-field="line.product_id"/>
+                                    </th>
+                                    <td>
+                                        <span t-field="line.quantity"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="line.price"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="line.total_bill_details"/>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+                <hr/>
+                <div class="container" style="text-align: right;" >
+                            Total Money:
+                            <t t-esc="doc.total_bill"/>
+                            <br/>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

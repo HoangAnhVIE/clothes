@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <data>
+        <record id="clothes_category_tree_view" model="ir.ui.view">
+            <field name="name">clothes.category.tree.view</field>
+            <field name="model">clothes.category</field>
+            <field name="arch" type="xml">
+                <tree string="Category" default_order="create_date desc">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="clothes_category_form_view" model="ir.ui.view">
+            <field name="name">clothes.category.form.view</field>
+            <field name="model">clothes.category</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div>
+                            <label for="name" />
+                            <h1><field name="name" placeholder="e.g. name"/></h1>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_clothes_category" model="ir.actions.act_window">
+            <field name="name">Category</field>
+            <field name="res_model">clothes.category</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="clothes_category"
+                  name="Category"
+                  action="action_clothes_category"
+                  parent = "menu_clothes"
+                  sequence = "11"/>
+    </data>
+</odoo>

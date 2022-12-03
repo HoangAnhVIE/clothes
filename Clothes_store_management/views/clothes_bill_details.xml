@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <data>
+        <record id="clothes_bill_details_tree_view" model="ir.ui.view">
+            <field name="name">clothes.bill.details.tree.view</field>
+            <field name="model">clothes.bill.details</field>
+            <field name="arch" type="xml">
+                <tree string="Bill details" default_order="create_date desc">
+                    <field name="product_id"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="price"/>
+                    <field name="quantity"/>
+                    <field name="total_bill_details"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="clothes_bill_details_form_view" model="ir.ui.view">
+            <field name="name">clothes.bill.details.form.view</field>
+            <field name="model">clothes.bill.details</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="product_id" invisible="1"/>
+                                <field name="category_id"/>
+                                <field name="price"/>
+                                <field name="sold"/>
+                                <field name="color"/>
+                                <field name="size"/>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="warehouse"/>
+                                <field name="quantity"/>
+                                <field name="total_bill_details"/>
+                            </group>
+                            <group>
+                                <field name="image" widget="image" width="150" height="150"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_clothes_bill_details" model="ir.actions.act_window">
+            <field name="name">Bill details</field>
+            <field name="res_model">clothes.bill.details</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,kanban,form</field>
+        </record>
+
+    </data>
+</odoo>

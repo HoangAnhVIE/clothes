@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <data>
+        <record id="clothes_bill_tree_view" model="ir.ui.view">
+            <field name="name">clothes.bill.tree.view</field>
+            <field name="model">clothes.bill</field>
+            <field name="arch" type="xml">
+                <tree decoration-success="state == 'paid'" decoration-danger="state == 'unpaid'" decoration-info="state == 'confirm'">
+                    <field name="customer_id"/>
+                    <field name="staff_id" />
+                    <field name="currency_id" invisible="1"/>
+                    <field name="book_type" widget="badge" decoration-success="book_type == 'store'" decoration-warning="book_type == 'ship'" optional="show"/>
+                    <field name="book_date"/>
+                    <field name="pay_date"/>
+                    <field name="discount_bill"/>
+                    <field name="total_bill"/>
+                    <field name="state" widget="badge" decoration-success="state == 'paid'" decoration-danger="state == 'unpaid'" decoration-info="state == 'confirm'" optional="show"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="clothes_bill_form_view" model="ir.ui.view">
+            <field name="name">clothes.bill.form.view</field>
+            <field name="model">clothes.bill</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header >
+                        <button id="button_confirm" name="action_confirm" string="Confirm" class="btn-primary"
+                                type="object" confirm="Do you want confirm this bill?"
+                                attrs="{'invisible':[('state','!=','draft')]}" groups="Clothes_store_management.group_manager,Clothes_store_management.group_staff"/>
+                        <button id="button_confirm_customer" name="action_unpaid" string="Confirm" class="btn-primary"
+                                type="object" confirm="Do you want confirm this bill?"
+                                attrs="{'invisible':[('state','!=','confirm')]}" groups="Clothes_store_management.group_customer"/>
+                        <button name="%(clothes_pay)d" string="Pay" context="{'default_bill_id': active_id}"
+                                class="oe_highlight" type="action" confirm="Do you set to pay this bill?"
+                                attrs="{'invisible':[('state','!=','unpaid')]}" groups="Clothes_store_management.group_manager,Clothes_store_management.group_staff"/>
+                        <button id="button_cancel" name="action_cancel" string="Cancel" class="btn-secondary"
+                                type="object" confirm="Do you want cancel?"
+                                attrs="{'invisible':[('state','==','draft')],'invisible':[('state','==','paid')]}" groups="Clothes_store_management.group_manager,Clothes_store_management.group_staff"/>
+                        <button id="button_cancel_customer" name="action_cancel" string="Cancel" class="btn-secondary"
+                                type="object" confirm="Do you want cancel?"
+                                attrs="{'invisible':[('state','!=','confirm')]}" groups="Clothes_store_management.group_customer"/>
+                        <field name="state" widget="statusbar" nolabel='1'
+                               statebar_visible="draft,confirm,unpaid,paid" />
+                    </header>
+
+                    <sheet >
+                        <widget name="web_ribbon" title="Paid" bg_color="bg-danger" attrs="{'invisible': [('state', '!=', 'paid')]}"/>
+                        <div >
+                            <label for="customer_id" class="oe_edit_only"/>
+                            <h1><field name="customer_id" placeholder="e.g. name" attrs="{'readonly': [('state', '!=', 'draft')]}"/></h1>
+                            <label for="staff_id" groups="Clothes_store_management.group_manager,Clothes_store_management.group_staff"/>
+                            <h3><field name="staff_id" attrs="{'readonly': [('state', '!=', 'draft')]}" groups="Clothes_store_management.group_manager,Clothes_store_management.group_staff" /></h3>
+                        </div>
+                        <group>
+                            <field name="book_type" widget="radio" options="{'horizontal': True}" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        </group>
+                        <group name="info">
+                            <group>
+                                <field name="book_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="address" attrs="{'invisible':[('book_type','!=','ship')],'readonly': [('state', '!=', 'draft')]}"/>
+                            </group>
+                            <group >
+                                <field name="fee_ship" attrs="{'invisible':[('book_type','!=','ship')],'readonly': [('state', '!=', 'draft')]}" />
+                                <field name="discount_bill" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                <field name="currency_id" invisible="1"/>
+                                <field name="pay_date" attrs="{'invisible':[('state','!=','paid')]}"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="bill_details_ids" attrs="{'readonly': [('state', '!=', 'draft')]}" >
+                                <tree>
+                                    <field name="product_id"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="quantity"/>
+                                    <field name="price"/>
+                                    <field name="total_bill_details"/>
+                                </tree>
+                            </field>
+                        </group>
+                        <group>
+                            <group></group>
+                            <group>
+                                <field name="total_bill" />
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="clothes_bill_search_view" model="ir.ui.view">
+            <field name="name">clothes.bill.search.view</field>
+            <field name="model">clothes.bill</field>
+            <field eval="10" name="priority"/>
+            <field name="arch" type="xml">
+                <search string="Bill Search">
+                    <field name="customer_id" />
+                    <field name="state" />
+                    <group expand='0' string='Group by...'>
+                        <filter string='Customer' name="customer_group" context="{'group_by': 'customer_id'}"/>
+                        <filter string='Status' name="state_group" context="{'group_by': 'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_clothes_bill" model="ir.actions.act_window">
+            <field name="name">Bill</field>
+            <field name="res_model">clothes.bill</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="search_view_id" ref="clothes_bill_search_view"/>
+        </record>
+
+        <record id="action_clothes_bill_form" model="ir.actions.act_window">
+            <field name="name">Bill</field>
+            <field name="res_model">clothes.bill</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">form</field>
+        </record>
+
+        <menuitem id="clothes_bill"
+                  name="Sale Bill"
+                  action="action_clothes_bill"
+                  parent = "menu_clothes"
+                  sequence = "2"
+                  groups="Clothes_store_management.group_manager,Clothes_store_management.group_staff"/>
+    </data>
+</odoo>

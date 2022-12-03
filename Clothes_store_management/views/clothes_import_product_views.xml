@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <data>
+        <record id="clothes_import_product_tree_view" model="ir.ui.view">
+            <field name="name">clothes.import.product.tree.view</field>
+            <field name="model">clothes.import.product</field>
+            <field name="arch" type="xml">
+                <tree string="Import Product" default_order="create_date desc">
+                    <field name="product_code"/>
+                    <field name="supplier_id"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="date_import"/>
+                    <field name="import_price"/>
+                    <field name="import_quantity"/>
+                    <field name="total_amount_import"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="clothes_import_product_form_view" model="ir.ui.view">
+            <field name="name">clothes.import.product.form.view</field>
+            <field name="model">clothes.import.product</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div>
+                            <label for="product_code" class="oe_edit_only"/>
+                            <h1><field name="product_code" /></h1>
+                            <label for="supplier_id"/>
+                            <h3><field name="supplier_id"/></h3>
+                        </div>
+                        <group name="info">
+                            <group>
+                                <field name="date_import"/>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="import_price"/>
+                                <field name="import_quantity"/>
+                                <field name="total_amount_import"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_clothes_import_product" model="ir.actions.act_window">
+            <field name="name">Import Product</field>
+            <field name="res_model">clothes.import.product</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,kanban,form</field>
+        </record>
+
+    </data>
+</odoo>

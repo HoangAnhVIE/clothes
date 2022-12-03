@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <data>
+        <record id="clothes_warehouse_tree_view" model="ir.ui.view">
+            <field name="name">clothes.warehouse.tree.view</field>
+            <field name="model">clothes.warehouse</field>
+            <field name="arch" type="xml">
+                <tree decoration-danger="inventory == 0" decoration-success="inventory > 0" default_order="create_date desc">
+                    <field name="product_id"/>
+                    <field name="total_import"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="export_quantity"/>
+                    <field name="inventory"/>
+                    <field name="total_import_value"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="clothes_warehouse_form_view" model="ir.ui.view">
+            <field name="name">clothes.warehouse.form.view</field>
+            <field name="model">clothes.warehouse</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <div>
+                                    <label for="product_id" class="oe_edit_only"/>
+                                    <h1>
+                                        <field name="product_id"/>
+                                    </h1>
+                                </div>
+                            </group>
+                            <group>
+                                <field name="image" widget="image" width="100" height="100"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Info Inventory">
+                                <group name="info">
+                                    <field name="total_import"/>
+                                    <field name="export_quantity"/>
+                                    <field name="inventory"/>
+                                </group>
+                            </page>
+                            <page string="Info Turnover" groups="Clothes_store_management.group_manager">
+                                <group>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="total_import_value"/>
+                                    <field name="turnover"/>
+                                </group>
+                            </page>
+                            <page string="Import products">
+                                <group>
+                                    <field name="import_product_ids">
+                                        <tree>
+                                            <field name="date_import"/>
+                                            <field name="supplier_id"/>
+                                            <field name="currency_id" invisible="1"/>
+                                            <field name="import_price"/>
+                                            <field name="import_quantity"/>
+                                            <field name="total_amount_import"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                                <group>
+                                    <group>
+                                        <field name="total_import"/>
+                                    </group>
+                                    <group>
+                                        <field name="total_import_value"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="clothes_warehouse_view_graph" model="ir.ui.view">
+            <field name="model">clothes.warehouse</field>
+            <field name="arch" type="xml">
+                <graph type="bar">
+                    <field name="product_id"/>
+                    <field name="import_product_ids"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="action_clothes_warehouse" model="ir.actions.act_window">
+            <field name="name">Warehouse</field>
+            <field name="res_model">clothes.warehouse</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,graph,form</field>
+        </record>
+
+        <menuitem id="clothes_warehouse"
+                  name="Warehouse"
+                  action="action_clothes_warehouse"
+                  parent = "menu_clothes"
+                  sequence = "12"
+                  groups="Clothes_store_management.group_manager,Clothes_store_management.group_staff"/>
+    </data>
+</odoo>

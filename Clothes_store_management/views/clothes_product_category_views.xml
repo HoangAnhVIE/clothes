@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <data>
+        <record id="clothes_product_category_view_tree" model="ir.ui.view">
+            <field name="name">clothes.product.category.tree.view</field>
+            <field name="model">clothes.product.category</field>
+            <field name="arch" type="xml">
+                <tree string="Product" default_order="create_date desc">
+                    <field name="name"/>
+                    <field name="categories_id"/>
+                    <field name="price"/>
+                    <field name="discount"/>
+                    <field name="fixed_price"/>
+                    <field name="currency_id" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="clothes_product_category_view_form" model="ir.ui.view">
+            <field name="name">clothes.product.category.form.view</field>
+            <field name="model">clothes.product.category</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <widget name="web_ribbon" title="Discount" bg_color="bg-danger" attrs="{'invisible': [('discount', '==', 0)]}"/>
+                        <group>
+                            <group>
+                                <label for="name" string="Category"/>
+                                <h1>
+                                    <field name="name" placeholder="e.g. name"/>
+                                </h1>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="categories_id"/>
+                                <field name="price"/>
+                                <field name="discount"/>
+                                <field name="fixed_price"/>
+                                <field name="sold"/>
+                            </group>
+                            <group>
+                                <field name="image" string="Product's Image" widget="image" width="200" height="200"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="clothes_product_view_kanban" model="ir.ui.view">
+            <field name="name">clothes.product.category.kanban</field>
+            <field name="model">clothes.product.category</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="name"/>
+                    <field name="image"/>
+                    <field name="sold"/>
+                    <field name="fixed_price"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_global_click" style="width: 20rem;">
+                                <div class="card" >
+                                    <field name="image" widget="image" width="100%" height="220"/>
+                                    <div class="card-body" >
+                                        <h3>
+                                            <spam>Name:</spam>
+                                            <spam>
+                                                <field name="name"/>
+                                            </spam>
+                                        </h3>
+                                        <h5>
+                                            <spam>Sold: </spam>
+                                            <spam>
+                                                <field name="sold"/>
+                                            </spam>
+                                        </h5>
+                                        <h6>
+                                            <spam>Price: </spam>
+                                            <spam>
+                                                <field name="fixed_price"/>
+                                            </spam>
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="action_clothes_product_category" model="ir.actions.act_window">
+            <field name="name">Product</field>
+            <field name="res_model">clothes.product.category</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+        <menuitem id="clothes_product_category"
+                  name="Product"
+                  action="action_clothes_product_category"
+                  parent = "menu_clothes"
+                  sequence = "4"/>
+    </data>
+</odoo>
